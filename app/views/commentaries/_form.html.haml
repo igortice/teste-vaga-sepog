@@ -1,0 +1,21 @@
+= stylesheet_link_tag 'posts', media: 'all'
+
+= form_with(model: commentary, local: true) do |form|
+
+  - if commentary.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(commentary.errors.count, "error")
+        prohibited this commentary from being saved:
+      %ul
+        - commentary.errors.full_messages.each do |message|
+          %li= message
+  .form-group
+    - unless commentary.try(:id).nil? 
+      = hidden_field_tag '_method', 'patch'
+    = form.label :commentary_text, 'Comente'
+    = form.text_area :commentary_text, class: "form-control"
+    = form.hidden_field :post_id, :value => commentary.post_id
+  .actions
+    = form.submit 'Postar Comentário', class:"btn btn-success"
+
